@@ -1,0 +1,56 @@
+
+public class Solution {
+    public bool IsValid(string s) {
+        // if uneven length or first element is closing bracket, return false
+        if (s.Length % 2 != 0 || s.Length == 1 || s[0] == ')' || s[0] == '}' || s[0] == ']')
+        {
+            return false;
+        }
+        
+        Stack openingBrackets = new Stack();
+        
+        // matching pairs of brackets
+        var brackets = new Dictionary<char, char>
+        {
+            { '{', '}' },
+            { '(', ')' },
+            { '[', ']' } 
+        };
+        
+        char topElement;
+        
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(' || s[i] == '{' || s[i] == '[')
+            {
+                openingBrackets.Push(s[i]);
+                topElement = (char)openingBrackets.Peek();
+            } else if (s[i] == ')' || s[i] == '}' || s[i] == ']')
+            {
+                // if stack empty and next element is closing bracket, return false
+                if (openingBrackets.Count == 0)
+                {
+                    return false;
+                }
+                topElement = (char)openingBrackets.Peek();
+
+                if (brackets[topElement] == s[i])
+                {
+                    char popped = (char)openingBrackets.Pop();
+                    if (openingBrackets.Count != 0)
+                    {
+                        topElement = (char)openingBrackets.Peek();
+                    }
+                } else return false;
+            }
+        }
+
+        if (openingBrackets.Count == 0)
+        {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }        
+}
